@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QDebug>
 
 class APISettings {
 public:
@@ -17,23 +18,8 @@ public:
     static QString ApiKeyTestnet2;
     static QString ApiSecretTestnet2;
 
-    APISettings() {
-        QFile file(":/json/ApiSettings.json");
-
-        file.open(QIODevice::ReadOnly);
-        QJsonObject jsonObj = QJsonDocument::fromJson(file.readAll()).object();
-        file.close();
-
-        this->ApiMainnetBaseUrl = jsonObj.value("ApiMainnetBaseUrl").toString();
-        this->ApiDemoBaseUrl = jsonObj.value("ApiDemoBaseUrl").toString();
-        this->RecvWindow = jsonObj.value("RecvWindow").toString();
-        this->ApiKeyDemo = jsonObj.value("ApiKeyDemo").toString();
-        this->ApiSecretDemo = jsonObj.value("ApiSecretDemo").toString();
-        this->ApiKeyTestnet1 = jsonObj.value("ApiKeyTestnet1").toString();
-        this->ApiSecretTestnet1 = jsonObj.value("ApiSecretTestnet1").toString();
-        this->ApiKeyTestnet2 = jsonObj.value("ApiKeyTestnet2").toString();
-        this->ApiSecretTestnet2 = jsonObj.value("ApiSecretTestnet2").toString();
-    }
+    APISettings(QString filepath);
 };
+
 
 #endif // APISETTINGS_H

@@ -1,4 +1,14 @@
-#include "api/APISettings.h"
+#include "src/models/APISettings.h"
+#include <QDir>
+
+/********************************************************************/
+/*                                TODO:                             */
+/*                                                                  */
+/* 1) Utilize QLoggingCategory, QDebug                              */
+/* 2) Derive from QNetworkAccessManager for custom implementation   */
+/*                                                                  */
+/*                                                                  */
+/********************************************************************/
 
 #include <QCoreApplication>
 #include <QJsonDocument>
@@ -144,11 +154,16 @@ void Encryption::GetOpenOrder() {
 
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
-    APISettings settings;
 
-    Encryption encryptionTest;
-    encryptionTest.PlaceOrder();
-    encryptionTest.GetOpenOrder();
+    QDir dir;
+    dir.cdUp();
+    dir.cdUp();
+    dir.cd("config");
+    APISettings settings(dir.filePath("ApiSettings.json"));
+
+    //Encryption encryptionTest;
+    //encryptionTest.PlaceOrder();
+    //encryptionTest.GetOpenOrder();
 
     return a.exec();
 }
