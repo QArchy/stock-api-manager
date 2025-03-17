@@ -12,7 +12,7 @@ struct WebSocketsParameters {
     QString privateUrl;
 };
 
-struct GetPostParameters {
+struct HttpsParameters {
     QString mainNetBaseUrl;
     QString testNetBaseUrl;
     QString demoNetBaseUrl;
@@ -28,7 +28,7 @@ struct Keys {
 
 struct BybitApi {
     WebSocketsParameters wsParams;
-    GetPostParameters gpParams;
+    HttpsParameters httpParams;
     Keys keys;
 };
 

@@ -15,9 +15,9 @@ void ApiSettings::loadSettings() {
         qFatal() << "Failed to parse JSON: " << parseError.errorString();
 
     QJsonObject jsonObj = jsonDoc.object();
-    bApi->gpParams.mainNetBaseUrl = jsonObj.value("ApiMainnetBaseUrl").toString();
-    bApi->gpParams.demoNetBaseUrl = jsonObj.value("ApiDemoBaseUrl").toString();
-    bApi->gpParams.recvWindow = jsonObj.value("RecvWindow").toString();
+    bApi->httpParams.mainNetBaseUrl = jsonObj.value("ApiMainnetBaseUrl").toString();
+    bApi->httpParams.demoNetBaseUrl = jsonObj.value("ApiDemoBaseUrl").toString();
+    bApi->httpParams.recvWindow = jsonObj.value("RecvWindow").toString();
     bApi->keys.apiKeyDemo = jsonObj.value("ApiKeyDemo").toString();
     bApi->keys.apiSecretDemo = jsonObj.value("ApiSecretDemo").toString();
     bApi->keys.apiKeyTestnet = jsonObj.value("ApiKeyTestnet").toString();

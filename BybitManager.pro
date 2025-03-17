@@ -6,7 +6,7 @@ SOURCES += \
     src/controllers/Logger/logger.cpp \
     src/main.cpp \
     src/controllers/Settings/apiSettings.cpp \
-    src/models/GetPostManager/getpostmanager.cpp \
+    src/models/HttpManager/httpmanager.cpp \
     src/models/WebSocketManager/websocketmanager.cpp \
     src/ui/mainwindow/mainwindow.cpp
 
@@ -14,9 +14,10 @@ HEADERS += \
     src/controllers/Logger/logger.h \
     src/controllers/Settings/apiSettings.h \
     src/controllers/Translator/translator.h \
-    src/models/GetPostManager/getpostmanager.h \
+    src/models/HttpManager/httpmanager.h \
     src/models/WebSocketManager/websocketmanager.h \
     src/models/nam.h \
+    src/tests.h \
     src/ui/mainwindow/mainwindow.h
 
 TRANSLATIONS += \

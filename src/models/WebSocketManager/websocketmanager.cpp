@@ -5,7 +5,7 @@
 #include <QUrlQuery>
 
 WebSocketManager::WebSocketManager(const WebSocketParameters& param, QObject *parent)
-    : QObject(parent), param(new WebSocketParameters(param)) {
+    : QObject(parent), param(param) {
     socket = nullptr;
 }
 
@@ -17,7 +17,7 @@ void WebSocketManager::connectToServer(const QJsonDocument &parameters, const QS
         socket = nullptr;
     }
 
-    QUrl url(param->baseUrl + urlSuffix);
+    QUrl url(param.baseUrl + urlSuffix);
     url.setQuery(genQueryStr(parameters.object()));
 
     socket = new QWebSocket(QString(), QWebSocketProtocol::VersionLatest, this);
@@ -60,17 +60,17 @@ QByteArray WebSocketManager::genQueryStr(const QJsonObject &parameters) {
 
 QByteArray WebSocketManager::signAuth(qint64 expires) {
     QByteArray message = "GET/realtime" + QByteArray::number(expires);
-    return QMessageAuthenticationCode::hash(message, param->apiSecret, QCryptographicHash::Sha256).toHex();
+    return QMessageAuthenticationCode::hash(message, param.apiSecret, QCryptographicHash::Sha256).toHex();
 }
 
 void WebSocketManager::onConnected() {
-    if (param->isPrivate) {
+    if (param.isPrivate) {
         qint64 expires = QDateTime::currentMSecsSinceEpoch() + 1000;
         QByteArray signature = signAuth(expires);
 
         QJsonObject authMsg;
         authMsg["op"] = "auth";
-        authMsg["args"] = QJsonArray() << QString(param->apiKey) << QString::number(expires) << QString(signature);
+        authMsg["args"] = QJsonArray() << QString(param.apiKey) << QString::number(expires) << QString(signature);
         socket->sendTextMessage(QJsonDocument(authMsg).toJson(QJsonDocument::Compact));
     }
     emit connected();

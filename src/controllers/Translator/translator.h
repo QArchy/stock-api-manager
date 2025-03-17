@@ -2,10 +2,11 @@
 #define TRANSLATOR_H
 
 #include <QCoreApplication>
-#include <QLocale>
+#include <QApplication>
 #include <QTranslator>
+#include <QLocale>
 
-void translation(QCoreApplication& a) {
+void translation(QApplication& a) {
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
     for (const QString &locale : uiLanguages) {

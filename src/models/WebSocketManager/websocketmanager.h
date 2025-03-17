@@ -42,7 +42,7 @@ private:
     QByteArray signAuth(qint64 expires);
 
     QWebSocket* socket;
-    WebSocketParameters* param;
+    WebSocketParameters param;
 };
 
 #endif // WEBSOCKETMANAGER_H
