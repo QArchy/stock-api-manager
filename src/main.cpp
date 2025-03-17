@@ -2,7 +2,7 @@
 #include "src/controllers/Logger/logger.h"
 #include "src/controllers/Translator/translator.h"
 #include "src/models/GetPostManager/getpostmanager.h"
-#include "src/models/networkSingleton.h"
+#include "src/models/nam.h"
 #include "src/models/WebSocketManager/websocketmanager.h"
 #include "src/ui/mainwindow/mainwindow.h"
 
@@ -118,13 +118,15 @@ int main(int argc, char *argv[]) {
     //gpmanager.customGet(QJsonDocument(parametersGetKline), getKlineUrl);
     //gpmanager.customGet(QJsonDocument(), "market/time");
 
-    // dateTimeTest(false);
+    WebSocketParameters param;
+    param.apiKey = ApiSettings::getInstance().getbApi()->keys.apiKeyDemo.toUtf8();
+    param.apiSecret = ApiSettings::getInstance().getbApi()->keys.apiSecretDemo.toUtf8();
+    param.baseUrl = ApiSettings::getInstance().getbApi()->wsParams.publicUrl.toUtf8();
+    param.isPrivate = false;
 
-    WebSocketManager manager("", "", "wss://stream.bybit.com/v5/public/linear");
-    // Connect to server
-    manager.connectToServer();
+    WebSocketManager manager(param);
+    manager.connectToServer(QJsonDocument(), "linear");
 
-    // When connected, send subscription
     QObject::connect(&manager, &WebSocketManager::connected, [&]() {
         QJsonObject subMsg;
         subMsg["op"] = "subscribe";
@@ -132,7 +134,6 @@ int main(int argc, char *argv[]) {
         manager.sendMessage(QJsonDocument(subMsg));
     });
 
-    // Handle incoming kline data
     QObject::connect(&manager, &WebSocketManager::messageReceived, [](const QJsonDocument &doc) {
         qDebug() << "Kline Update:" << doc.toJson();
     });

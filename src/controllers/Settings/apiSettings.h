@@ -7,9 +7,9 @@
 #include <QJsonObject>
 #include <QDebug>
 
-struct WebSocketStreamParameters {
-    QString publicStreamUrl;
-    QString privateStreamUrl;
+struct WebSocketsParameters {
+    QString publicUrl;
+    QString privateUrl;
 };
 
 struct GetPostParameters {
@@ -27,7 +27,7 @@ struct Keys {
 };
 
 struct BybitApi {
-    WebSocketStreamParameters wsParams;
+    WebSocketsParameters wsParams;
     GetPostParameters gpParams;
     Keys keys;
 };

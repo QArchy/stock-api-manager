@@ -22,6 +22,8 @@ void ApiSettings::loadSettings() {
     bApi->keys.apiSecretDemo = jsonObj.value("ApiSecretDemo").toString();
     bApi->keys.apiKeyTestnet = jsonObj.value("ApiKeyTestnet").toString();
     bApi->keys.apiSecretTestnet = jsonObj.value("ApiSecretTestnet").toString();
+    bApi->wsParams.publicUrl = jsonObj.value("PublicWsUrl").toString();
+    bApi->wsParams.privateUrl = jsonObj.value("PrivateWsUrl").toString();
 
     qInfo() << "All settings loaded successfully";
     initialized = true;

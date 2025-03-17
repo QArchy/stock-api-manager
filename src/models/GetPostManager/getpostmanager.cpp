@@ -1,5 +1,5 @@
 #include "getpostmanager.h"
-#include "src/models/networkSingleton.h"
+#include "src/models/nam.h"
 
 QByteArray GetPostManager::genQueryStr(const QJsonObject& parameters) {
     QByteArray query;

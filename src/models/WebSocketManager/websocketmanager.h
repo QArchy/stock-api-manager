@@ -6,16 +6,23 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+struct WebSocketParameters {
+    QByteArray apiKey;
+    QByteArray apiSecret;
+    QByteArray baseUrl;
+    bool isPrivate;
+};
+
 class WebSocketManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit WebSocketManager( const QString &apiKey, const QString &apiSecret, const QString &baseUrl, QObject *parent = nullptr);
+    explicit WebSocketManager(const WebSocketParameters& param, QObject *parent = nullptr);
     ~WebSocketManager();
 
-    void connectToServer(const QJsonDocument &parameters = QJsonDocument(), const QString &urlSuffix = "", bool isPrivate = false);
+    void connectToServer(const QJsonDocument &parameters = QJsonDocument(), const QString &urlSuffix = "");
     void disconnectFromServer();
-    void sendMessage(const QJsonDocument &message);
+    bool sendMessage(const QJsonDocument &message);
 
 signals:
     void connected();
@@ -34,11 +41,8 @@ private:
     QByteArray genQueryStr(const QJsonObject &parameters);
     QByteArray signAuth(qint64 expires);
 
-    QWebSocket *socket;
-    QByteArray apiKey;
-    QByteArray apiSecret;
-    QByteArray baseUrl;
-    bool isPrivate;
+    QWebSocket* socket;
+    WebSocketParameters* param;
 };
 
 #endif // WEBSOCKETMANAGER_H
