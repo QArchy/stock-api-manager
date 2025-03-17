@@ -1,14 +1,22 @@
-QT += core gui widgets network
+QT += core gui widgets network websockets
 
 CONFIG += c++17
 
 SOURCES += \
+    src/controllers/Logger/logger.cpp \
     src/main.cpp \
-    src/models/APISettings.cpp \
+    src/controllers/Settings/apiSettings.cpp \
+    src/models/GetPostManager/getpostmanager.cpp \
+    src/models/WebSocketManager/websocketmanager.cpp \
     src/ui/mainwindow/mainwindow.cpp
 
 HEADERS += \
-    src/models/APISettings.h \
+    src/controllers/Logger/logger.h \
+    src/controllers/Settings/apiSettings.h \
+    src/controllers/Translator/translator.h \
+    src/models/GetPostManager/getpostmanager.h \
+    src/models/WebSocketManager/websocketmanager.h \
+    src/models/networkSingleton.h \
     src/ui/mainwindow/mainwindow.h
 
 TRANSLATIONS += \

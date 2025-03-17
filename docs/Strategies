@@ -1,0 +1,98 @@
+1. Moving Average Crossover Strategy
+	A moving average crossover strategy is a trend-following method that uses two moving averages (typically one short-term and one long-term). When the short-term moving average crosses above the long-term moving average, it generates a buy signal; when it crosses below, it triggers a sell signal.
+	
+	Data Collection:
+		Obtain klines (OHLC data) from Bybit’s API.
+	Calculation:
+		Compute the Simple Moving Average (SMA) for two different periods.
+	Signal Generation:
+		When the short SMA crosses above the long SMA, issue a buy order. When it crosses below, issue a sell order.
+
+2. Order Book Imbalance Strategy
+	This strategy leverages real-time order book data. You monitor the imbalance between bid and ask volumes. A significant imbalance can signal short-term price movement:
+	Strong Bid Pressure: May indicate upward momentum (buy signal).
+	Strong Ask Pressure: May indicate downward momentum (sell signal).
+	
+	Data Collection:
+		Use WebSocket or periodic GET requests to retrieve order book snapshots.
+	Calculation:
+		Calculate the total volume on both bid and ask sides.
+		Compute an imbalance metric such as:
+			Imbalance = (BidVolume - AskVolume) / (BidVolume + AskVolume)
+	Signal Generation:
+		If the imbalance exceeds a certain threshold (say, > 0.3), issue a buy signal; if it falls below (say, < -0.3), issue a sell signal.
+
+3. Mean Reversion Strategy (Bollinger Bands)
+	Concept : Trade reversals when prices deviate significantly from the mean.
+	
+	Implementation :
+		Use Bollinger Bands (20-period MA ± 2 standard deviations).
+		Buy when price touches the lower band; sell when it touches the upper band.
+
+4. Momentum Strategy (RSI-based)
+	Concept: Follow the trend using Relative Strength Index
+	
+5. Statistical Arbitrage (Pair Trading)
+	Concept: Exploit price relationships between correlated assets.
+	
+6. Market Making Strategy
+	Concept: Profit from bid-ask spread while managing inventory risk.
+	
+7. Trend-Following Strategy (Using Klines)
+	Concept : Identify trends using historical price data (candlesticks) and ride the momentum.
+	
+	Implementation :
+		Use moving averages (MA) or MACD to detect trends.
+		Example: Buy when a short-term MA (e.g., 9-period) crosses above a long-term MA (e.g., 21-period).
+
+8. Volume-Based Breakout Strategy
+	Concept : Enter trades when price breaks a resistance/support level with high volume.
+	
+	Implementation :
+		Use kline volume to confirm breakouts.
+		Example: Buy if the price closes above a resistance level with volume > 20-period average.
+
+9. Real-Time Arbitrage (Spot vs. Perpetual)
+	Concept : Exploit price differences between Bybit perpetuals and spot markets.
+	
+	Implementation :
+		Monitor funding rates and basis (perpetual price - spot price).
+		Example: If funding rate is negative (longs pay shorts), short perpetuals and buy spot.
+
+10. Delta Analysis (Order Flow)
+	Concept : Track order book deltas (changes in bid/ask volumes) to anticipate price movements.
+	
+	Implementation :
+		Use WebSocket streams to monitor real-time order book updates.
+		Example: If bid volume increases rapidly at a price level, it may indicate upward momentum.
+		
+11. Trend Following (ADX + Parabolic SAR)
+	Concept: Confirm trend strength with ADX and use SAR for entry/exit.
+	
+12. Volume-Weighted Average Price (VWAP) Strategy
+	Concept: Trade when price crosses VWAP with high volume.
+
+13. FFT
+	1. Cycle Detection
+		Identify Dominant Cycles (Identify dominant market cycles (daily, weekly, seasonal patterns) in price data):
+			By applying FFT to historical price data (e.g., closing prices), you obtain the frequency spectrum, which shows the strength (amplitude) of various cycles. Dominant frequencies (or cycles) can be linked to recurring market behaviors.
+		Signal Generation:
+			Once you identify a strong cycle, you can use its phase information to predict turning points. For instance, if you know the period of a cycle, you might forecast when the price is likely to reach a peak or trough.
+	2. Resonance Trading Signals (Identify when multiple timeframes exhibit synchronized cyclical behavior)
+	3. Noise Filtering (Remove high-frequency noise while preserving important trends)
+		Remove High-Frequency Noise:
+			Many financial time series are noisy. You can use FFT to filter out high-frequency components (which are often just noise) by applying a low-pass filter in the frequency domain. After filtering, the inverse FFT brings you back to a smoother time series, making trend identification easier.
+	4. Volatility Spectrum Analysis (Identify frequency bands with highest volatility contribution)
+	5. Trend/Mean-Reversion Hybrid Strategy (Combine FFT-based trend identification with mean-reversion signals)
+	6. Spectral Analysis for Strategy Optimization
+		FFT-based spectral analysis identifies key frequencies in indicators (e.g., RSI, MACD) to refine strategy parameters.
+			For instance, detecting cyclicality in volatility to adjust stop-loss levels
+	4. Feature Extraction for Algorithms
+		Indicator Construction:
+			The FFT output can be used to construct technical indicators. For example, you might track changes in the power of certain frequency bands to signal market regime changes.
+		Combined Strategies:
+			FFT-based signals can be integrated with other indicators (like moving averages or RSI) to create more robust trading systems.
+			
+High Frequency refined:
+
+
