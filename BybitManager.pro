@@ -16,7 +16,7 @@ HEADERS += \
     src/controllers/Translator/translator.h \
     src/models/GetPostManager/getpostmanager.h \
     src/models/WebSocketManager/websocketmanager.h \
-    src/models/networkSingleton.h \
+    src/models/nam.h \
     src/ui/mainwindow/mainwindow.h
 
 TRANSLATIONS += \

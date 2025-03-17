@@ -10,15 +10,10 @@ class WebSocketManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit WebSocketManager(const QString &apiKey,
-                              const QString &apiSecret,
-                              const QString &baseUrl,
-                              QObject *parent = nullptr);
+    explicit WebSocketManager( const QString &apiKey, const QString &apiSecret, const QString &baseUrl, QObject *parent = nullptr);
     ~WebSocketManager();
 
-    void connectToServer(const QJsonDocument &parameters = QJsonDocument(),
-                         const QString &urlSuffix = "",
-                         bool isPrivate = false);
+    void connectToServer(const QJsonDocument &parameters = QJsonDocument(), const QString &urlSuffix = "", bool isPrivate = false);
     void disconnectFromServer();
     void sendMessage(const QJsonDocument &message);
 
@@ -39,11 +34,11 @@ private:
     QByteArray genQueryStr(const QJsonObject &parameters);
     QByteArray signAuth(qint64 expires);
 
-    QWebSocket *m_webSocket;
-    QByteArray m_apiKey;
-    QByteArray m_apiSecret;
-    QByteArray m_baseUrl;
-    bool m_isPrivate;
+    QWebSocket *socket;
+    QByteArray apiKey;
+    QByteArray apiSecret;
+    QByteArray baseUrl;
+    bool isPrivate;
 };
 
 #endif // WEBSOCKETMANAGER_H

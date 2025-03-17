@@ -37,7 +37,7 @@ void GetPostManager::post(const QJsonDocument& doc, const QString& url) {
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     req.setRawHeader("X-BAPI-SIGN", sign(Timestamp + this->apiKey + this->recvWindow + jsonData));
 
-    Network::getInstance().getManager()->post(req, jsonData);
+    NAM::getInstance().getManager()->post(req, jsonData);
 }
 
 void GetPostManager::get(const QJsonDocument& doc, const QString& url) {
@@ -48,5 +48,5 @@ void GetPostManager::get(const QJsonDocument& doc, const QString& url) {
     setReqHeader(req, Timestamp);
     req.setRawHeader("X-BAPI-SIGN", sign(Timestamp + this->apiKey + this->recvWindow + jsonQuery));
 
-    Network::getInstance().getManager()->get(req);
+    NAM::getInstance().getManager()->get(req);
 }

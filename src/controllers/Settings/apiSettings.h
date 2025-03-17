@@ -7,41 +7,48 @@
 #include <QJsonObject>
 #include <QDebug>
 
-/*******************************************************************************************/
-/*                                  To add new setting, do:                                */
-/*                                                                                         */
-/* 1. add private static QString variableName in the APISettings class.                    */
-/* 2. initialize it like QString APISettings::variableName; in the source file.            */
-/* 3. add private static QString get<variableName> function in the APISettings class.      */
-/* 4. initialize its definition in the source file.                                        */
-/* 5. make changes in Logger::logToFile function                                           */
-/*                                                                                         */
-/*******************************************************************************************/
+struct WebSocketStreamParameters {
+    QString publicStreamUrl;
+    QString privateStreamUrl;
+};
 
-class APISettings {
+struct GetPostParameters {
+    QString mainNetBaseUrl;
+    QString testNetBaseUrl;
+    QString demoNetBaseUrl;
+    QString recvWindow;
+};
+
+struct Keys {
+    QString apiKeyDemo;
+    QString apiSecretDemo;
+    QString apiKeyTestnet;
+    QString apiSecretTestnet;
+};
+
+struct BybitApi {
+    WebSocketStreamParameters wsParams;
+    GetPostParameters gpParams;
+    Keys keys;
+};
+
+class ApiSettings {
 public:
-    static void load(const QString& filepath);
-
-    static QString getApiMainnetBaseUrl();
-    static QString getApiDemoBaseUrl();
-    static QString getRecvWindow();
-    static QString getApiKeyDemo();
-    static QString getApiSecretDemo();
-    static QString getApiKeyTestnet1();
-    static QString getApiSecretTestnet1();
-    static QString getApiKeyTestnet2();
-    static QString getApiSecretTestnet2();
-
+    static ApiSettings& getInstance() {
+        static ApiSettings instance;
+        if (!instance.initialized) instance.loadSettings();
+        return instance;
+    }
+    BybitApi* getbApi();
 private:
-    static QString apiMainnetBaseUrl;
-    static QString apiDemoBaseUrl;
-    static QString recvWindow;
-    static QString apiKeyDemo;
-    static QString apiSecretDemo;
-    static QString apiKeyTestnet1;
-    static QString apiSecretTestnet1;
-    static QString apiKeyTestnet2;
-    static QString apiSecretTestnet2;
+    ApiSettings();
+    ApiSettings(const ApiSettings&) = delete;
+    ApiSettings& operator=(const ApiSettings&) = delete;
+    ~ApiSettings() = default;
+    void loadSettings();
+
+    bool initialized;
+    BybitApi* bApi;
 };
 
 #endif // APISETTINGS_H

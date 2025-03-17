@@ -3,19 +3,19 @@
 
 #include <QNetworkAccessManager>
 
-class Network {
+class NAM {
 public:
-    static Network& getInstance() {
-        static Network instance;
+    static NAM& getInstance() {
+        static NAM instance;
         return instance;
     }
     QNetworkAccessManager* getManager() { return manager; }
 private:
     QNetworkAccessManager* manager;
-    Network() : manager{new QNetworkAccessManager()} {}
-    ~Network() { delete manager; }
-    Network(const Network&) = delete;
-    Network& operator=(const Network&) = delete;
+    NAM() : manager{new QNetworkAccessManager()} {}
+    ~NAM() { delete manager; }
+    NAM(const NAM&) = delete;
+    NAM& operator=(const NAM&) = delete;
 };
 
 #endif // NETWORKSINGLETON_H

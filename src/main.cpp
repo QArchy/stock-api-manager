@@ -69,9 +69,7 @@ void onFinished(QNetworkReply* reply) {
 
 int main(int argc, char *argv[]) {
     QCoreApplication a(argc, argv);
-
     Logger::install();
-    QDir dir; dir.cdUp(); dir.cdUp(); dir.cd("config"); APISettings::load(dir.filePath("ApiSettings.json"));
 
     //QJsonObject parametersPost;
     //parametersPost["category"] = "linear";
