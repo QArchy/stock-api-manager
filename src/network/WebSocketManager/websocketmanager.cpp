@@ -5,41 +5,41 @@
 #include <QUrlQuery>
 
 WebSocketManager::WebSocketManager(const WebSocketParameters& param, QObject *parent)
-    : QObject(parent), param(param) {
-    socket = nullptr;
+    : QObject(parent), m_param(param) {
+    m_socket = nullptr;
 }
 
 WebSocketManager::~WebSocketManager() { disconnectFromServer(); }
 
 void WebSocketManager::connectToServer(const QJsonDocument &parameters, const QString &urlSuffix) {
-    if (socket) {
-        socket->deleteLater();
-        socket = nullptr;
+    if (m_socket) {
+        m_socket->deleteLater();
+        m_socket = nullptr;
     }
 
-    QUrl url(param.baseUrl + urlSuffix);
+    QUrl url(m_param.baseUrl + urlSuffix);
     url.setQuery(genQueryStr(parameters.object()));
 
-    socket = new QWebSocket(QString(), QWebSocketProtocol::VersionLatest, this);
-    connect(socket, &QWebSocket::connected, this, &WebSocketManager::onConnected);
-    connect(socket, &QWebSocket::disconnected, this, &WebSocketManager::onDisconnected);
-    connect(socket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &WebSocketManager::onError);
-    connect(socket, &QWebSocket::textMessageReceived, this, &WebSocketManager::onTextMessageReceived);
+    m_socket = new QWebSocket(QString(), QWebSocketProtocol::VersionLatest, this);
+    connect(m_socket, &QWebSocket::connected, this, &WebSocketManager::onConnected);
+    connect(m_socket, &QWebSocket::disconnected, this, &WebSocketManager::onDisconnected);
+    connect(m_socket, QOverload<QAbstractSocket::SocketError>::of(&QWebSocket::errorOccurred), this, &WebSocketManager::onError);
+    connect(m_socket, &QWebSocket::textMessageReceived, this, &WebSocketManager::onTextMessageReceived);
 
-    socket->open(url);
+    m_socket->open(url);
 }
 
 void WebSocketManager::disconnectFromServer() {
-    if (socket) {
-        socket->close();
-        socket->deleteLater();
-        socket = nullptr;
+    if (m_socket) {
+        m_socket->close();
+        m_socket->deleteLater();
+        m_socket = nullptr;
     }
 }
 
 bool WebSocketManager::sendMessage(const QJsonDocument &message) {
-    if (socket && socket->state() == QAbstractSocket::ConnectedState) {
-        socket->sendTextMessage(message.toJson(QJsonDocument::Compact));
+    if (m_socket && m_socket->state() == QAbstractSocket::ConnectedState) {
+        m_socket->sendTextMessage(message.toJson(QJsonDocument::Compact));
         return true;
     }
     return false;
@@ -60,18 +60,18 @@ QByteArray WebSocketManager::genQueryStr(const QJsonObject &parameters) {
 
 QByteArray WebSocketManager::signAuth(qint64 expires) {
     QByteArray message = "GET/realtime" + QByteArray::number(expires);
-    return QMessageAuthenticationCode::hash(message, param.apiSecret, QCryptographicHash::Sha256).toHex();
+    return QMessageAuthenticationCode::hash(message, m_param.apiSecret, QCryptographicHash::Sha256).toHex();
 }
 
 void WebSocketManager::onConnected() {
-    if (param.isPrivate) {
+    if (m_param.isPrivate) {
         qint64 expires = QDateTime::currentMSecsSinceEpoch() + 1000;
         QByteArray signature = signAuth(expires);
 
         QJsonObject authMsg;
         authMsg["op"] = "auth";
-        authMsg["args"] = QJsonArray() << QString(param.apiKey) << QString::number(expires) << QString(signature);
-        socket->sendTextMessage(QJsonDocument(authMsg).toJson(QJsonDocument::Compact));
+        authMsg["args"] = QJsonArray() << QString(m_param.apiKey) << QString::number(expires) << QString(signature);
+        m_socket->sendTextMessage(QJsonDocument(authMsg).toJson(QJsonDocument::Compact));
     }
     emit connected();
 }
@@ -96,5 +96,5 @@ void WebSocketManager::onTextMessageReceived(const QString &message) {
 
 void WebSocketManager::onError(QAbstractSocket::SocketError error) {
     Q_UNUSED(error)
-    emit errorOccurred(socket->errorString());
+    emit errorOccurred(m_socket->errorString());
 }

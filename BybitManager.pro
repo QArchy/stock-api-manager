@@ -6,18 +6,21 @@ SOURCES += \
     src/controllers/Logger/logger.cpp \
     src/main.cpp \
     src/controllers/Settings/apiSettings.cpp \
-    src/models/HttpManager/httpmanager.cpp \
-    src/models/WebSocketManager/websocketmanager.cpp \
+    src/network/HttpManager/httpmanager.cpp \
+    src/network/WebSocketManager/websocketmanager.cpp \
+    src/tests/loggerTest/loggerworker.cpp \
     src/ui/mainwindow/mainwindow.cpp
 
 HEADERS += \
     src/controllers/Logger/logger.h \
     src/controllers/Settings/apiSettings.h \
     src/controllers/Translator/translator.h \
-    src/models/HttpManager/httpmanager.h \
-    src/models/WebSocketManager/websocketmanager.h \
-    src/models/nam.h \
+    src/network/HttpManager/httpmanager.h \
+    src/network/WebSocketManager/websocketmanager.h \
+    src/network/nam.h \
     src/tests.h \
+    src/tests/loggerTest/loggerTest.h \
+    src/tests/loggerTest/loggerworker.h \
     src/ui/mainwindow/mainwindow.h
 
 TRANSLATIONS += \

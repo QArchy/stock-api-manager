@@ -41,8 +41,8 @@ private:
     QByteArray genQueryStr(const QJsonObject &parameters);
     QByteArray signAuth(qint64 expires);
 
-    QWebSocket* socket;
-    WebSocketParameters param;
+    QWebSocket* m_socket;
+    WebSocketParameters m_param;
 };
 
 #endif // WEBSOCKETMANAGER_H

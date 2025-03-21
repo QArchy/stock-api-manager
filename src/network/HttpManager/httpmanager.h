@@ -36,7 +36,7 @@ private:
     QNetworkRequest createRequest(const QString& endpoint, const QByteArray& timestamp, const QByteArray& payload) const;
     QByteArray generateQueryString(const QJsonObject& params) const;
 
-    HttpParameters params;
+    HttpParameters m_params;
 };
 
 #endif // HTTPMANAGER_H

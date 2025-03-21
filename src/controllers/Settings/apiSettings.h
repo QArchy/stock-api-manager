@@ -36,7 +36,7 @@ class ApiSettings {
 public:
     static ApiSettings& getInstance() {
         static ApiSettings instance;
-        if (!instance.initialized) instance.loadSettings();
+        if (!instance.m_initialized) instance.loadSettings();
         return instance;
     }
     BybitApi* getbApi();
@@ -47,8 +47,8 @@ private:
     ~ApiSettings() = default;
     void loadSettings();
 
-    bool initialized;
-    BybitApi* bApi;
+    bool m_initialized;
+    BybitApi* m_bApi;
 };
 
 #endif // APISETTINGS_H

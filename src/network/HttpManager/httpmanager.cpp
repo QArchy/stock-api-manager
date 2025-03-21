@@ -1,5 +1,5 @@
 #include "httpmanager.h"
-#include "src/models/nam.h"
+#include "src/network/nam.h"
 
 #include <QNetworkReply>
 #include <QDateTime>
@@ -9,7 +9,7 @@
 #include <QCryptographicHash>
 
 HttpManager::HttpManager(const HttpParameters& params, QObject* parent)
-    : QObject(parent), params(params) {
+    : QObject(parent), m_params(params) {
     connect(NAM::getInstance().getManager(), &QNetworkAccessManager::finished, this, &HttpManager::handleReply);
 }
 
@@ -32,17 +32,17 @@ void HttpManager::get(const QJsonDocument& params, const QString& endpoint) {
 }
 
 QByteArray HttpManager::createSignature(const QByteArray& timestamp, const QByteArray& payload) const {
-    const QByteArray data = timestamp + params.apiKey + params.recvWindow + payload;
-    return QMessageAuthenticationCode::hash(data, params.apiSecret, QCryptographicHash::Sha256).toHex();
+    const QByteArray data = timestamp + m_params.apiKey + m_params.recvWindow + payload;
+    return QMessageAuthenticationCode::hash(data, m_params.apiSecret, QCryptographicHash::Sha256).toHex();
 }
 
 QNetworkRequest HttpManager::createRequest(const QString& endpoint, const QByteArray& timestamp, const QByteArray& payload) const {
-    QNetworkRequest request(QUrl(params.baseUrl + endpoint));
+    QNetworkRequest request(QUrl(m_params.baseUrl + endpoint));
 
-    request.setRawHeader("X-BAPI-API-KEY", params.apiKey);
+    request.setRawHeader("X-BAPI-API-KEY", m_params.apiKey);
     request.setRawHeader("X-BAPI-SIGN-TYPE", "2");
     request.setRawHeader("X-BAPI-TIMESTAMP", timestamp);
-    request.setRawHeader("X-BAPI-RECV-WINDOW", params.recvWindow);
+    request.setRawHeader("X-BAPI-RECV-WINDOW", m_params.recvWindow);
     request.setRawHeader("X-BAPI-SIGN", createSignature(timestamp, payload));
 
     return request;

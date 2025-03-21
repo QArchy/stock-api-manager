@@ -1,8 +1,8 @@
 #ifndef TESTS_H
 #define TESTS_H
 
-#include "src/models/HttpManager/httpmanager.h"
-#include "src/models/WebSocketManager/websocketmanager.h"
+#include "src/network/HttpManager/httpmanager.h"
+#include "src/network/WebSocketManager/websocketmanager.h"
 #include "src/controllers/Settings/apiSettings.h"
 #include <QJsonDocument>
 #include <QNetworkReply>
