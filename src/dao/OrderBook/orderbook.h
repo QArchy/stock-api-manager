@@ -4,20 +4,17 @@
 #include "src/libs/Eigen/Dense"
 #include <QObject>
 
-struct OrderBookAsks {
-    float val[500]; // String
-    float qty[500]; // String
+#pragma pack(push, 16)  // 16-byte alignment for SSE/AVX
+struct OrderBookSide {
+    alignas(16) float val[500];  // C++11 alignment
+    alignas(16) float qty[500];
 };
-
-struct OrderBookBids {
-    float val[500]; // String
-    float qty[500]; // String
-};
+#pragma pack(pop)
 
 struct OrderBookData {
     qint64 ts; // Number
-    OrderBookAsks a;
-    OrderBookBids b;
+    OrderBookSide a;
+    OrderBookSide b;
     QString s; // String
     qint64 seq; // Integer
     qint64 u; // Integer
@@ -28,6 +25,7 @@ class OrderBook : public QObject {
 public:
     explicit OrderBook(QObject* parent = nullptr);
 public slots:
+    __attribute__((hot))
     void handleOrderbookUpdate(const QJsonDocument& doc);
 private:
     OrderBookData* m_obCurrent;

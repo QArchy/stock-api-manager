@@ -7,6 +7,17 @@
 OrderBook::OrderBook(QObject *parent) : QObject(parent), m_obCurrent(new OrderBookData()), m_obOld(new OrderBookData()) {}
 
 void OrderBook::handleOrderbookUpdate(const QJsonDocument &doc) {
+    static QElapsedTimer timerCalc;
+    static QElapsedTimer fCallTimer;
+    qDebug() << "New fCall:\t" << fCallTimer.elapsed() << "ms";
+
+    qDebug() << "Msg sent:\t\t" << QDateTime::fromMSecsSinceEpoch(doc.object()["ts"].toInteger()).toUTC();
+    qDebug() << "Msg received:\t" << QDateTime::currentDateTimeUtc();
+    qDebug() << "Msg latency:\t" <<
+        QDateTime::currentDateTimeUtc() - QDateTime::fromMSecsSinceEpoch(doc.object()["ts"].toInteger()).toUTC();
+    timerCalc.start();
+
+
     QJsonObject dObj = doc.object();
     if (!doc["topic"].toString().startsWith("orderbook"))
         return;
@@ -26,12 +37,14 @@ void OrderBook::handleOrderbookUpdate(const QJsonDocument &doc) {
     QJsonArray asks = objData["a"].toArray();
 
     if (type == "snapshot" || needUpdate) {
+        #pragma GCC unroll 4
         for (int i = 0; i < 500; i++) {
             float new_bVal = bids[i][0].toString().toFloat();
             float new_bQty = bids[i][1].toString().toFloat();
             m_obCurrent->b.val[i] = new_bVal;
             m_obCurrent->b.qty[i] = new_bQty;
         }
+        #pragma GCC unroll 4
         for (int i = 0; i < 500; i++) {
             float new_aVal = bids[i][0].toString().toFloat();
             float new_aQty = bids[i][1].toString().toFloat();
@@ -40,8 +53,9 @@ void OrderBook::handleOrderbookUpdate(const QJsonDocument &doc) {
         }
         qDebug() << "Snapshot processed for" << m_obCurrent->s << "Update ID:" << m_obCurrent->u;
     } else {
+        #pragma GCC ivdep
         for (int i = 0, j = 0, k = 0; i < 500; i++) {
-            if (j > bids.size()) { /* no more updates, just copy the last elements */
+            if (j == bids.size()) { /* no more updates, just copy the last elements */
                 std::memcpy(&m_obOld->b.val[k], &m_obCurrent->b.val[i], sizeof(m_obCurrent->b.val[i]) * (500 - i));
                 std::memcpy(&m_obOld->b.qty[k], &m_obCurrent->b.qty[i], sizeof(m_obCurrent->b.qty[i]) * (500 - i));
                 break;
@@ -80,6 +94,7 @@ void OrderBook::handleOrderbookUpdate(const QJsonDocument &doc) {
         std::swap(m_obOld->b, m_obCurrent->b);
 
         // ... nearly similar algo for asks
+        #pragma GCC ivdep
         for (int i = 0, j = 0; i < 500; i++) {
             float new_aVal = asks[j][0].toString().toFloat();
             float new_aQty = asks[j][1].toString().toFloat();
@@ -87,26 +102,8 @@ void OrderBook::handleOrderbookUpdate(const QJsonDocument &doc) {
         }
         qDebug() << "Delta processed for" << m_obCurrent->s << "Update ID:" << m_obCurrent->u;
     }
+
+    qDebug() << doc;
+    qDebug() << "Calc time:\t" << timerCalc.elapsed() << "ms\n\n";
+    fCallTimer.start();
 }
-
-//static QElapsedTimer timerCalc;
-//static QElapsedTimer fCallTimer;
-//qDebug() << "New fCall:\t" << fCallTimer.elapsed() << "ms";
-
-//qDebug() << "Msg sent:\t\t" << QDateTime::fromMSecsSinceEpoch(doc.object()["ts"].toInteger()).toUTC();
-//qDebug() << "Msg received:\t" << QDateTime::currentDateTimeUtc();
-//qDebug() << "Msg latency:\t" <<
-//    QDateTime::currentDateTimeUtc() - QDateTime::fromMSecsSinceEpoch(doc.object()["ts"].toInteger()).toUTC();
-
-//if (doc.object()["topic"].toString().startsWith("orderbook")) {
-//    timerCalc.start();
-//    //handleOrderbookUpdate(doc);
-//    qDebug() << doc;
-//    qDebug() << "Calc time:\t" << timerCalc.elapsed() << "ms\n\n";
-//} else {
-//    timerCalc.start();
-//    qDebug() << '\n' << doc;
-//    qDebug() << "Calc time:\t" << timerCalc.elapsed() << "ms\n\n";
-//}
-
-//fCallTimer.start();
