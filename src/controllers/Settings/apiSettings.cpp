@@ -8,7 +8,8 @@ void ApiSettings::loadSettings() {
         qFatal() << "Failed to open file";
 
     QJsonParseError parseError;
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(file.readAll(), &parseError);
+    QByteArray arr = file.readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(arr, &parseError);
     file.close();
 
     if (parseError.error != QJsonParseError::NoError)

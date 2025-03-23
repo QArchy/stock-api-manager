@@ -17,6 +17,7 @@ HEADERS += \
     src/controllers/Settings/apiSettings.h \
     src/controllers/Translator/translator.h \
     src/dao/OrderBook/orderbook.h \
+    src/defines.h \
     src/libs/Eigen/Cholesky \
     src/libs/Eigen/Cholmodsupport \
     src/libs/Eigen/Core \
@@ -70,3 +71,6 @@ FORMS += \
 
 RESOURCES += \
     resources/resources.qrc
+
+LIBS += -L/usr/lib
+LIBS += -lfftw3

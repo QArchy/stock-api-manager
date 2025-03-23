@@ -17,9 +17,7 @@ void Logger::initialize() {
     if(!generalLog.open(QIODevice::WriteOnly | QIODevice::Append)) qFatal() << "Log not open";
     logStream.setDevice(&generalLog);
 
-    qSetMessagePattern("[%{time yyyy-MM-dd hh:mm:ss.zzz}] "
-                       "%{if-category}%{category}%{endif}\t"
-                       "%{type} %{message}");
+    qSetMessagePattern("[%{time yyyy-MM-dd hh:mm:ss.zzz}]%{if-category}%{category}%{endif}\t%{type} %{message}");
 
     originalHandler = qInstallMessageHandler(messageHandler);
 }

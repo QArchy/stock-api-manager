@@ -7,14 +7,12 @@
 #include "src/tests/loggerTest/loggerworker.h"
 #include <QApplication>
 
-#include <iostream>
-
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     translation(a);
     Logger::initialize();
 
-    OrderBook* ob = new OrderBook();
+    OrderBook* ob = new OrderBook("linear.BTCUSDT", 500);
 
     WebSocketParameters param;
     param.apiKey = ApiSettings::getInstance().getbApi()->keys.apiKeyDemo.toUtf8();
@@ -38,7 +36,7 @@ int main(int argc, char *argv[]) {
         }
     });
 
-    QObject::connect(wsManager, &WebSocketManager::messageReceived, ob, &OrderBook::handleOrderbookUpdate);
+    QObject::connect(wsManager, &WebSocketManager::messageReceived, ob, &OrderBook::update);
 
     QObject::connect(wsManager, &WebSocketManager::errorOccurred, [](const QString& error) {
         qCritical() << "WebSocket error:" << error;
