@@ -80,8 +80,8 @@ CMakeLists.txt.user*
 .rcc/
 .uic/
 /build*/
-/scr/libs/boost_1_87_0/
-/scr/libs/fftw-3.3.10/
+/src/libs/boost_1_87_0/
+/src/libs/fftw-3.3.10/
 
 # Sensitive information
 /config/ApiSettings.json
