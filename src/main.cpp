@@ -5,6 +5,7 @@
 #include "src/network/WebSocketManager/websocketmanager.h"
 #include "src/controllers/Settings/apiSettings.h"
 #include "src/tests/loggerTest/loggerworker.h"
+#include "src/models/obanalyzer.h"
 #include <QApplication>
 
 int main(int argc, char *argv[]) {
@@ -13,6 +14,18 @@ int main(int argc, char *argv[]) {
     Logger::initialize();
 
     OrderBook* ob = new OrderBook("linear.BTCUSDT", 500);
+    obAnalyzer* oba = new obAnalyzer();
+    QObject::connect(ob, &OrderBook::updated, oba, &obAnalyzer::analyzeOB);
+
+    QObject::connect(oba, &obAnalyzer::buySignal, [](float price, float amount) {
+        // Implement buy logic here
+        qDebug() << "Executing BUY order at" << price << "Amount:" << amount;
+    });
+
+    QObject::connect(oba, &obAnalyzer::sellSignal, [](float price, float amount) {
+        // Implement sell logic here
+        qDebug() << "Executing SELL order at" << price << "Amount:" << amount;
+    });
 
     WebSocketParameters param;
     param.apiKey = ApiSettings::getInstance().getbApi()->keys.apiKeyDemo.toUtf8();
@@ -29,7 +42,6 @@ int main(int argc, char *argv[]) {
         QJsonObject subMsg;
         subMsg["op"] = "subscribe";
         subMsg["args"] = QJsonArray() << "orderbook.500.BTCUSDT";
-        //subMsg["args"] = QJsonArray() << "tickers.BTCUSDT";
 
         if (!wsManager->sendMessage(QJsonDocument(subMsg))) {
             qCritical() << "Failed to send subscription message";
@@ -42,7 +54,7 @@ int main(int argc, char *argv[]) {
         qCritical() << "WebSocket error:" << error;
     });
 
-    //MainWindow w;
+    MainWindow w;
     //w.show();
     return a.exec();
 }

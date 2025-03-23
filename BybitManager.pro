@@ -7,6 +7,7 @@ SOURCES += \
     src/dao/OrderBook/orderbook.cpp \
     src/main.cpp \
     src/controllers/Settings/apiSettings.cpp \
+    src/models/obanalyzer.cpp \
     src/network/HttpManager/httpmanager.cpp \
     src/network/WebSocketManager/websocketmanager.cpp \
     src/tests/loggerTest/loggerworker.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     src/libs/Eigen/Stdvector \
     src/libs/Eigen/Superlusupport \
     src/libs/Eigen/Umfpacksupport \
+    src/models/obanalyzer.h \
     src/network/HttpManager/httpmanager.h \
     src/network/WebSocketManager/websocketmanager.h \
     src/network/nam.h \

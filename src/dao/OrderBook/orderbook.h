@@ -24,7 +24,7 @@ struct OrderBookData {
 class OrderBook : public QObject {
     Q_OBJECT
 public:
-    OrderBook(QString currency, qint16 depth, QObject* parent = nullptr);
+    explicit OrderBook(QString currency, qint16 depth, QObject* parent = nullptr);
     ~OrderBook();
 public slots:
     void update(const QJsonDocument& doc);
