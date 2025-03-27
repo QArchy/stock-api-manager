@@ -13,8 +13,14 @@ void obAnalyzer::analyzeOB(const OrderBookData* data) {
     const OrderBookSide* bids = data->b;
     const OrderBookSide* asks = data->a;
 
+    const int depthToConsider = bids->val.size() * 0.1;
+
     // 1. Calculate order book imbalance using top 5 levels
-    float bidVolume = bids->qty.sum(), askVolume = asks->qty.sum();
+    float bidVolume = 0, askVolume = 0;
+    for(int i = 0; i < depthToConsider; i++) {
+        bidVolume += bids->qty[i];
+        askVolume += asks->qty[i];
+    }
     const float imbalanceRatio = bidVolume / (bidVolume + askVolume);
 
     // 2. Calculate spread and mid-price
@@ -28,7 +34,6 @@ void obAnalyzer::analyzeOB(const OrderBookData* data) {
     float totalBidQty = 0, totalAskQty = 0;
 
     // Calculate for first 10% of depth (most liquid area)
-    const int depthToConsider = bids->val.size() * 0.1;
     for(int i = 0; i < depthToConsider; i++) {
         bidVWAP += bids->val[i] * bids->qty[i];
         totalBidQty += bids->qty[i];

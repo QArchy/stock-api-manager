@@ -1,0 +1,39 @@
+QThread - create
+
+Worker class - moved to a thread, signals and slots re instantiated in it for cross-thread communication
+
+On signal-slot connection add Qt::QueuedConnection to ensure thread safety
+
+Data that is transfered via a signal-slot connection must have a copy constructor (in case of a sofisticated data type/structure/class)
+
+Application description:
+1) Stock API manager
+2) Written on QT 6.8.2 (C++17)
+4) Libraries used:
+  4.1) Eigen
+  4.2) FFTW3
+
+Threads list:
+0) Main thread (UI)
+
+(1, 2) * Symbols [Maybe replace with pooled/grouped threads? Maybe create one thread for all orderbook websockets, e.t.c.?]
+  1) Network thread (WebSockets + Data)
+    What it does:
+    - Has multiple websockets for different data types (orderbook [every 100ms], ticker [every 100ms],   klines[every 1s], ...)
+    - Data parsing (from JSON) to internal data types for calculation thread (the network delay for incoming data let us parse data in the network thread)
+    
+  1 <-> 2) Data communication via lock-free structure?
+  
+  2) Calculation thread
+    What it does:
+    - gathers all information from websockets
+    - performs heavy operaions (fft, vector operations)
+    - emits signals to the decision making thread
+
+3) Decision making thread (+ REST API - QNetworkAccessManager):
+  What it does:
+  - Anlyses data of different symnols (btc spot, btcusdt futures, eth spot, e.t.c)
+  - Looks for buy, sell opportunities via signals from calculation thread
+  - Knows about user current orders, opens or closes orders dependent on signals from calculation thread 
+  - Sends signals to REST API to place/close orders
+  - Runs an event loop (QThread::exec()).
