@@ -1,0 +1,47 @@
+\doxysection{Web\+Socket\+Manager Class Reference}
+\hypertarget{classWebSocketManager}{}\label{classWebSocketManager}\index{WebSocketManager@{WebSocketManager}}
+Inheritance diagram for Web\+Socket\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classWebSocketManager}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classWebSocketManager_a73cd6070508c2b014367a6553409f1b8}\label{classWebSocketManager_a73cd6070508c2b014367a6553409f1b8} 
+void {\bfseries connected} ()
+\item 
+\Hypertarget{classWebSocketManager_aa97c5afe3cda334490cf24f456520603}\label{classWebSocketManager_aa97c5afe3cda334490cf24f456520603} 
+void {\bfseries disconnected} ()
+\item 
+\Hypertarget{classWebSocketManager_adaed5f8bd7bb74abf91e9fdba3c1f660}\label{classWebSocketManager_adaed5f8bd7bb74abf91e9fdba3c1f660} 
+void {\bfseries message\+Received} (const QJson\+Document \&message)
+\item 
+\Hypertarget{classWebSocketManager_ab87f4aa38008865c4db6e23538927e52}\label{classWebSocketManager_ab87f4aa38008865c4db6e23538927e52} 
+void {\bfseries error\+Occurred} (const QString \&error\+Message)
+\item 
+\Hypertarget{classWebSocketManager_a1330d6d8fcc0e5a2dc8d194d0e21a817}\label{classWebSocketManager_a1330d6d8fcc0e5a2dc8d194d0e21a817} 
+void {\bfseries auth\+Result} (bool success, const QString \&message)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classWebSocketManager_a1ae72552766f980f96fe14856fc1be0b}\label{classWebSocketManager_a1ae72552766f980f96fe14856fc1be0b} 
+{\bfseries Web\+Socket\+Manager} (const \mbox{\hyperlink{structWebSocketParameters}{Web\+Socket\+Parameters}} \&param, QObject \texorpdfstring{$\ast$}{*}parent=nullptr)
+\item 
+\Hypertarget{classWebSocketManager_a48798e8122e94f511902601157145309}\label{classWebSocketManager_a48798e8122e94f511902601157145309} 
+void {\bfseries connect\+To\+Server} (const QJson\+Document \&parameters=QJson\+Document(), const QString \&url\+Suffix="{}"{})
+\item 
+\Hypertarget{classWebSocketManager_a51c6c6b036eca091a5aa905176d55dea}\label{classWebSocketManager_a51c6c6b036eca091a5aa905176d55dea} 
+void {\bfseries disconnect\+From\+Server} ()
+\item 
+\Hypertarget{classWebSocketManager_a9af7f729e2e6fd3a8a72fa04fa3ab63b}\label{classWebSocketManager_a9af7f729e2e6fd3a8a72fa04fa3ab63b} 
+bool {\bfseries send\+Message} (const QJson\+Document \&message)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/network/\+Web\+Socket\+Manager/websocketmanager.\+h\item 
+src/network/\+Web\+Socket\+Manager/websocketmanager.\+cpp\end{DoxyCompactItemize}

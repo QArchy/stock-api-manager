@@ -46,7 +46,9 @@ void placeOrder (QString side, float price, float qty, HttpManager* httpManager)
     httpManager->post(QJsonDocument(orderParams), "order/create");
 }
 
-
+/*!
+ * Main function
+ */
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
     translation(a);
