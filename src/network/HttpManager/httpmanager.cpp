@@ -1,5 +1,5 @@
 #include "httpmanager.h"
-#include "src/network/nam.h"
+#include "nam.h"
 
 #include <QNetworkReply>
 #include <QDateTime>

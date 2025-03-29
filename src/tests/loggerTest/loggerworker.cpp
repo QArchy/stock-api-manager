@@ -1,5 +1,5 @@
 #include "loggerworker.h"
-#include "src/controllers/Logger/logger.h"
+#include <Logger/logger.h>
 #include <QDebug>
 LoggerWorker::LoggerWorker(int threadNum, QObject *parent) : QObject(parent), threadNum(threadNum) {}
 

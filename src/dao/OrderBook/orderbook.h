@@ -1,8 +1,7 @@
 #ifndef ORDERBOOK_H
 #define ORDERBOOK_H
 
-#include "src/defines.h"
-#include "src/libs/Eigen/Core"
+#include <Eigen/Core>
 #include <QObject>
 
 struct OrderBookSide {
@@ -36,7 +35,7 @@ public:
 private:
     void snapshotSide(QJsonArray& side, OrderBookSide *obSide);
     void deltaSide(QJsonArray& side, OrderBookSide *obSideCurrent, OrderBookSide *obSideOld, bool bid);
-    #ifdef DEBUG_ORDERBOOK_DAO
+    #ifdef DEBUG_DAO_LIB
     bool validCheckSide(OrderBookSide *obSide, bool bid);
     void printSide(OrderBookSide *obSide);
     #endif

@@ -3,7 +3,7 @@
 ApiSettings::ApiSettings() { m_bApi = new BybitApi; m_initialized = false; }
 
 void ApiSettings::loadSettings() {
-    QFile file("/home/archy/MEGA/Programming/C++/BybitManager/config/ApiSettings.json");
+    QFile file("/home/archy/MEGA/Programming/C++/stock-api-manager/config/ApiSettings.json");
     if (!file.open(QIODevice::ReadOnly))
         qFatal() << "Failed to open file";
 

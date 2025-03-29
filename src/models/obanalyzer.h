@@ -2,7 +2,7 @@
 #ifndef OBANALYZER_H
 #define OBANALYZER_H
 
-#include "src/dao/OrderBook/orderbook.h"
+#include <OrderBook/orderbook.h>
 #include <QObject>
 
 class obAnalyzer : public QObject

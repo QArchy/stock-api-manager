@@ -1,5 +1,6 @@
-1) Change the app structure as listed in Threading.txt
-2) Setup doxygen
-3) Create a data holder for all bybit enums and error codes
-4) Create a data holder for all bybit http requests
-5) Create a data holder for all bybit websocket requests
+1) Change build system to cmake
+2) Setup github workflow
+3) Change the app structure as listed in Threading.txt
+4) Create a data holder for all bybit enums and error codes
+5) Create a data holder for all bybit http requests
+6) Create a data holder for all bybit websocket requests

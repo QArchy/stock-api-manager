@@ -1,12 +1,12 @@
-#include "src/controllers/Translator/translator.h"
-#include "src/controllers/Logger/logger.h"
-#include "src/dao/OrderBook/orderbook.h"
-#include "src/ui/mainwindow/mainwindow.h"
-#include "src/network/HttpManager/httpmanager.h"
-#include "src/network/WebSocketManager/websocketmanager.h"
-#include "src/controllers/Settings/apiSettings.h"
-#include "src/tests/loggerTest/loggerworker.h"
-#include "src/models/obanalyzer.h"
+#include <Translator/translator.h>
+#include <Logger/logger.h>
+#include <OrderBook/orderbook.h>
+#include <ui/mainwindow/mainwindow.h>
+#include <HttpManager/httpmanager.h>
+#include <WebSocketManager/websocketmanager.h>
+#include <Settings/apiSettings.h>
+#include <loggerTest/loggerworker.h>
+#include <models/obanalyzer.h>
 #include <QApplication>
 
 QString currentOrderLinkId; // Track active orders

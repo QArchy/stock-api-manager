@@ -82,6 +82,7 @@ CMakeLists.txt.user*
 /build*/
 /src/libs/boost_1_87_0/
 /src/libs/fftw-3.3.10/
+src/config.h
 
 # Sensitive information
 /config/ApiSettings.json

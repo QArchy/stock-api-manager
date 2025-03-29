@@ -17,7 +17,7 @@ OrderBook::~OrderBook() {
 }
 
 void OrderBook::update(const QJsonDocument &doc) {
-    #ifdef DEBUG_ORDERBOOK_DAO
+    #ifdef DEBUG_DAO_LIB
     static QElapsedTimer timerCalc;
     static QElapsedTimer fCallTimer;
     qDebug() << doc;
@@ -28,7 +28,7 @@ void OrderBook::update(const QJsonDocument &doc) {
         return;
     QJsonObject objData = dObj["data"].toObject();
 
-    #ifdef DEBUG_ORDERBOOK_DAO
+    #ifdef DEBUG_DAO_LIB
     qDebug() << "New fCall:\t" << fCallTimer.elapsed() << "ms";
     qDebug() << "Msg sent:\t" << QDateTime::fromMSecsSinceEpoch(dObj["ts"].toInteger()).toUTC();
     qDebug() << "Msg received:\t" << QDateTime::currentDateTimeUtc();
@@ -48,7 +48,7 @@ void OrderBook::update(const QJsonDocument &doc) {
     if (dObj["type"].toString() == "snapshot" || needUpdate) {
         snapshotSide(bids, m_obCurrent->b);
         snapshotSide(asks, m_obCurrent->a);
-        #ifdef DEBUG_ORDERBOOK_DAO
+        #ifdef DEBUG_DAO_LIB
         if (!validCheckSide(m_obCurrent->b, true)) {
             qDebug() << "Bids snapshot update:";
             printSide(m_obCurrent->b);
@@ -65,7 +65,7 @@ void OrderBook::update(const QJsonDocument &doc) {
         std::swap(m_obCurrent->b, m_obOld->b);
         deltaSide(asks, m_obCurrent->a, m_obOld->a, false);
         std::swap(m_obCurrent->a, m_obOld->a);
-        #ifdef DEBUG_ORDERBOOK_DAO
+        #ifdef DEBUG_DAO_LIB
         if (!validCheckSide(m_obCurrent->b, true)) {
             qDebug() << "Bids delta update:";
             printSide(m_obCurrent->b);
@@ -80,7 +80,7 @@ void OrderBook::update(const QJsonDocument &doc) {
     }
     emit updated(m_obCurrent);
 
-    #ifdef DEBUG_ORDERBOOK_DAO
+    #ifdef DEBUG_DAO_LIB
     qDebug() << "Calc time:\t" << timerCalc.elapsed() << "ms\n\n";
     fCallTimer.start();
     #endif
@@ -143,7 +143,7 @@ void OrderBook::deltaSide(QJsonArray &side, OrderBookSide *obSideCurrent, OrderB
     }
 }
 
-#ifdef DEBUG_ORDERBOOK_DAO
+#ifdef DEBUG_DAO_LIB
 bool OrderBook::validCheckSide(OrderBookSide *obSide, bool bid) {
     float tmp = obSide->val[0];
     bool valid = true;

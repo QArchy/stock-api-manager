@@ -12,7 +12,6 @@ var NAVTREEINDEX0 =
 "classWebSocketManager.html":[0,0,14],
 "classes.html":[0,1],
 "classobAnalyzer.html":[0,0,10],
-"defines_8h_source.html":[1,0,0,6],
 "dir_12816431ead8e71b1f2935eeed3c0155.html":[1,0,0,1],
 "dir_6752ee5280c1660461b4d22fcbee7a0c.html":[1,0,0,4,0],
 "dir_68267d1309a1af8e8297ef4c3efbcdba.html":[1,0,0],
@@ -48,7 +47,7 @@ var NAVTREEINDEX0 =
 "structOrderBookSide.html":[0,0,13],
 "structWebSocketParameters.html":[0,0,15],
 "structWebSocketsParameters.html":[0,0,16],
-"tests_8h_source.html":[1,0,0,7],
+"tests_8h_source.html":[1,0,0,4,1],
 "translator_8h_source.html":[1,0,0,0,2,0],
 "websocketmanager_8h_source.html":[1,0,0,3,1,0]
 };

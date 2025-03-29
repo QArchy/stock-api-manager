@@ -1,0 +1,7 @@
+// Auto-generated configuration header
+#cmakedefine DEBUG_CONTROLLERS_LIB
+#cmakedefine DEBUG_DAO_LIB
+#cmakedefine DEBUG_MODELS_LIB
+#cmakedefine DEBUG_NETWORK_LIB
+#cmakedefine DEBUG_UI_LIB
+#cmakedefine DEBUG_TESTS_LIB
