@@ -16,6 +16,10 @@ jobs:
         with:
           target: desktop
 
+      - name: List Qt modules
+        run: |
+          aqt list-qt linux desktop --modules 6.8.2 x86_64
+
       # Install FFTW3 development library
       - name: Install FFTW3
         run: |
