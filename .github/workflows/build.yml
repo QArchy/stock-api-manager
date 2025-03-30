@@ -23,7 +23,7 @@ jobs:
       # Set up Qt 6.8.2 using the official Qt GitHub Action.
       # Note: This action supports Qt 6.5 and later.
       - name: Setup Qt
-        uses: qt/setup-qt@v2
+        uses: jurplel/install-qt-action@v2
         with:
           version: '6.8.2'
           host: linux
