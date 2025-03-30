@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - uses: actions/checkout@v3
+
+      # Install FFTW3 development library
+      - name: Install FFTW3
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfftw3-dev
+
+      # Set up Qt 6.8.2 using the official Qt GitHub Action.
+      # Note: This action supports Qt 6.5 and later.
+      - name: Setup Qt
+        uses: qt/setup-qt@v2
+        with:
+          version: '6.8.2'
+          host: linux
+          target: desktop
+          modules: qtbase, qtdeclarative, qtwebsockets
+
+      # Configure the project with CMake (adjust generator if needed)
+      - name: Configure CMake
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      # Build the project (using parallel builds)
+      - name: Build
+        run: cmake --build build -- -j $(nproc)
