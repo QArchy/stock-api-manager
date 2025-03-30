@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository code
+      - uses: actions/checkout@v3
+        with:
+          target: desktop
+
+      # Install FFTW3 development library
+      - name: Install FFTW3
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfftw3-dev
+
+      # Set up Qt 6.8.2 using the jurplel Qt GitHub Action.
+      # Note: This action supports Qt 6.5 and later.
+      - name: Setup Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.2'
+          host: linux
+          target: desktop
+          modules: qtwebsockets qtconnectivity
+
+      # Configure the project with CMake (adjust generator if needed)
+      # Configure CMake to generate compile_commands.json
+      - name: Configure CMake
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      # Build the project (using parallel builds)
+      - name: Build
+        run: cmake --build build -- -j $(nproc)
+
+      # Install dependencies
+      - name: Install analysis tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-tidy cppcheck
+
+      # Run clang-tidy on all .cpp files in stock-api-manager/src/ excluding stock-api-manager/src/libs/
+      - name: Run clang-tidy
+        run: |
+          for file in $(find stock-api-manager/src/ -path "src/libs" -prune -o -type f -name "*.cpp" -print); do
+            echo "Analyzing $file"
+            clang-tidy "$file" -p build || true
+          done > clang-tidy-report.txt
+          
+      # Run cppcheck on stock-api-manager/src/ excluding stock-api-manager/src/libs/
+      - name: Run cppcheck
+        run: |
+          cppcheck --enable=all --inconclusive --std=c++17 --force src/ -i src/libs 2> cppcheck-report.txt || true
+          
+      # Upload analysis reports for review
+      - name: Upload analysis reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: analysis-reports
+          path: |
+            clang-tidy-report.txt
+            cppcheck-report.txt
