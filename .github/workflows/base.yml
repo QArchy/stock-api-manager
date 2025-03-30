@@ -51,7 +51,7 @@ jobs:
       # Run clang-tidy on all .cpp files in stock-api-manager/src/ excluding stock-api-manager/src/libs/
       - name: Run clang-tidy
         run: |
-          for file in $(find stock-api-manager/src/ -path "src/libs" -prune -o -type f -name "*.cpp" -print); do
+          for file in $(find src/ -path "src/libs" -prune -o -type f -name "*.cpp" -print); do
             echo "Analyzing $file"
             clang-tidy "$file" -p build || true
           done > clang-tidy-report.txt
