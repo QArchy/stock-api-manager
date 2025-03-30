@@ -40,19 +40,3 @@ jobs:
       # Build the project (using parallel builds)
       - name: Build
         run: cmake --build build -- -j $(nproc)
-
-        # Create GitHub Release and upload build artifacts
-      - name: Create GitHub Release
-        id: create_release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: build/*  # Modify this based on where your build artifacts are located
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub automatically provides this secret
-
-      # Upload build artifacts to GitHub Release
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: my-build-artifacts
-          path: build/*  # Modify this based on where your build artifacts are located
