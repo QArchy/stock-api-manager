@@ -28,7 +28,7 @@ jobs:
           version: '6.8.2'
           host: linux
           target: desktop
-          modules: core gui widgets network websockets
+          modules: qtbase qtwebsockets
 
       # Configure the project with CMake (adjust generator if needed)
       - name: Configure CMake
