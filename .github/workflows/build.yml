@@ -16,10 +16,6 @@ jobs:
         with:
           target: desktop
 
-      - name: List Qt modules
-        run: |
-          aqt list-qt linux desktop --modules 6.8.2 x86_64
-
       # Install FFTW3 development library
       - name: Install FFTW3
         run: |
@@ -35,6 +31,10 @@ jobs:
           host: linux
           target: desktop
           modules: qtbase qtwebsockets
+
+      - name: List Qt modules
+        run: |
+          aqt list-qt linux desktop --modules 6.8.2 x86_64
 
       # Configure the project with CMake (adjust generator if needed)
       - name: Configure CMake
