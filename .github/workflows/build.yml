@@ -25,7 +25,7 @@ jobs:
       - name: Setup Qt
         uses: jurplel/install-qt-action@v2
         with:
-          version: '6.8.2'
+          version: '6.8.2-qt6_682'
           host: linux
           target: desktop
           modules: qtbase, qtdeclarative, qtwebsockets
