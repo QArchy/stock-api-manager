@@ -31,6 +31,7 @@ jobs:
           host: linux
           target: desktop
           modules: qtbase qtwebsockets
+        continue-on-error: true  # Allow the job to continue even if this step fails
 
       - name: List Qt modules
         run: |
