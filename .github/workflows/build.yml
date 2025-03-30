@@ -37,7 +37,7 @@ jobs:
         run: |
           aqt list-qt linux desktop
           aqt list-qt linux desktop --arch 6.8.2
-          aqt list-qt linux desktop --modules 6.8.2 x86_64
+          aqt list-qt linux desktop --modules 6.8.2 linux_gcc_64
 
       # Configure the project with CMake (adjust generator if needed)
       - name: Configure CMake
