@@ -22,7 +22,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libfftw3-dev
 
-      # Set up Qt 6.8.2 using the official Qt GitHub Action.
+      # Set up Qt 6.8.2 using the jurplel Qt GitHub Action.
       # Note: This action supports Qt 6.5 and later.
       - name: Setup Qt
         uses: jurplel/install-qt-action@v4
@@ -33,12 +33,6 @@ jobs:
           modules: qtwebsockets qtconnectivity
         continue-on-error: true  # Allow the job to continue even if this step fails
 
-      - name: List Qt modules
-        run: |
-          aqt list-qt linux desktop
-          aqt list-qt linux desktop --arch 6.8.2
-          aqt list-qt linux desktop --modules 6.8.2 linux_gcc_64
-
       # Configure the project with CMake (adjust generator if needed)
       - name: Configure CMake
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
@@ -46,3 +40,19 @@ jobs:
       # Build the project (using parallel builds)
       - name: Build
         run: cmake --build build -- -j $(nproc)
+
+        # Create GitHub Release and upload build artifacts
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/*  # Modify this based on where your build artifacts are located
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub automatically provides this secret
+
+      # Upload build artifacts to GitHub Release
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-build-artifacts
+          path: build/*  # Modify this based on where your build artifacts are located
