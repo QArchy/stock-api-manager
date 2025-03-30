@@ -30,7 +30,7 @@ jobs:
           version: '6.8.2'
           host: linux
           target: desktop
-          modules: qtbase qtwebsockets
+          modules: qtwebsockets qtconnectivity
         continue-on-error: true  # Allow the job to continue even if this step fails
 
       - name: List Qt modules
