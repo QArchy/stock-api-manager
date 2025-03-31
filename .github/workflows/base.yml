@@ -62,11 +62,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libfftw3-dev
 
-      - name: Configure CMake
-        run:
-            cd ${{ env.QT_PATH }}/gcc_64/lib/cmake/Qt6
+      - name: Zaebal
+        working-directory: ${{ env.QT_PATH }}/gcc_64/lib/cmake/Qt6
+        run: |
             ls
-            cmake -S . -B ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }} \
+
+      - name: Configure CMake
+        run: cmake -S . -B ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }} \
             -DQt6_DIR=${{ env.QT_PATH }}/gcc_64/lib/cmake/Qt6  \
             -DCMAKE_PREFIX_PATH=${{ env.QT_PATH }}/gcc_64
             -DCMAKE_BUILD_TYPE=Release \
