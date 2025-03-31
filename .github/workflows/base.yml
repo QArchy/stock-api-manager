@@ -28,14 +28,14 @@ jobs:
         run: |
           git fetch --all --tags -f
 
-      #- name: Try to cache the Qt-Installation
-      #  id: cache-qt
-      #  uses: actions/cache@v4
-      #  env: 
-      #    cache-name: cache-qt
-      #  with:
-      #    path: ${{ runner.temp }}/Qt
-      #    key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}
+      - name: Try to cache the Qt-Installation
+        id: cache-qt
+        uses: actions/cache@v4
+        env: 
+          cache-name: cache-qt
+        with:
+          path: ${{ runner.temp }}/Qt
+          key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}
 
       #- if: ${{ steps.cache-qt.outputs.cache-hit != 'true' }}
       - name: Setup Qt
@@ -48,15 +48,6 @@ jobs:
           setup-pyqt: false
           modules: qtwebsockets qtconnectivity
 
-      - name: Set Qt environment variables
-        run: |
-          QT_PATH="${{ steps.qt-setup.outputs.qtPath }}"
-          if [ -z "$QT_PATH" ]; then
-            echo "qt-setup output is missing, using fallback path"
-            QT_PATH="${{ runner.temp }}/Qt/${{ env.QT_VERSION }}"
-          fi
-          echo "QT_PATH=$QT_PATH" >> $GITHUB_ENV
-
       - name: Install FFTW3
         run: |
           sudo apt-get update
@@ -64,8 +55,8 @@ jobs:
 
       - name: Configure CMake
         run: cmake -S . -B ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }} \
-          -DQt6_DIR=${{ env.QT_PATH }}/gcc_64/lib/cmake/Qt6 \
-          -DCMAKE_PREFIX_PATH=${{ env.QT_PATH }}/gcc_64 \
+          -DQt6_DIR=${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/gcc_64/lib/cmake/Qt6 \
+          -DCMAKE_PREFIX_PATH=${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/gcc_64 \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
       
