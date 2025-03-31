@@ -60,7 +60,7 @@ jobs:
         run: cmake --build ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }} -- -j $(nproc)
 
       - name: Prepare build Artifact (delete unnecessary files)
-        working-directory: ${{ runner.temp }}\${{ env.SAM_BUILD_DIR_NAME }}
+        working-directory: ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }}
         run: |
           rm -f imports/${{ env.SAM_ARTIFACT_WITHOUT_ZIP_ENDING }}/*.pdb
           rm -f imports/${{ env.SAM_ARTIFACT_WITHOUT_ZIP_ENDING }}/*.exp
