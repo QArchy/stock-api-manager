@@ -3,6 +3,7 @@ name: New app release
 env:
   SOURCE_DIR: ${{ github.workspace }}
   QT_VERSION: 6.8.2
+  QT_PATH: ${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/gcc_64  # Добавлен путь к Qt
   SAM_SOURCE_DIR: ${{ github.workspace }}/src
   SAM_ARTIFACT_WITHOUT_ZIP_ENDING: stockApiManager
   SAM_BUILD_DIR_NAME: buildStockApiManager
@@ -54,7 +55,10 @@ jobs:
           sudo apt-get install -y libfftw3-dev
 
       - name: Configure CMake
-        run: cmake -S . -B ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }} -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        run: cmake -S . -B ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }} \
+            -DCMAKE_PREFIX_PATH=${{ env.QT_PATH }} \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
       - name: Build
         run: cmake --build ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }} -- -j $(nproc)
