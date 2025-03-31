@@ -53,7 +53,7 @@ jobs:
           QT_PATH="${{ steps.qt-setup.outputs.qtPath }}"
           if [ -z "$QT_PATH" ]; then
             echo "qt-setup output is missing, using fallback path"
-            QT_PATH="${{ runner.temp }}/Qt/${{ env.QT_VERSION }}"
+            QT_PATH="${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/gcc_64"
           fi
           echo "QT_PATH=$QT_PATH" >> $GITHUB_ENV
 
