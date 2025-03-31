@@ -37,11 +37,6 @@ jobs:
           path: ${{ runner.temp }}/Qt
           key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}
 
-      - name: ls temp
-        working-directory: ${{ runner.temp }}/Qt
-        run: |
-          ls
-
       - if: ${{ steps.cache-qt.outputs.cache-hit != 'true' }}
         name: Setup Qt
         uses: jurplel/install-qt-action@v4
