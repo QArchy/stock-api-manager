@@ -33,7 +33,6 @@ target_link_libraries(stock-api-manager PRIVATE
     network_lib
     ui_lib
     tests_lib
-    fftw3
 )
 
 # Include directories
