@@ -50,8 +50,12 @@ jobs:
 
       - name: Set Qt environment variables
         run: |
-          echo "QT_PATH=${{ steps.qt-setup.outputs.qtPath }}" >> $GITHUB_ENV
-          echo "CMAKE_PREFIX_PATH=${{ steps.qt-setup.outputs.qtPath }}" >> $GITHUB_ENV
+          QT_PATH="${{ steps.qt-setup.outputs.qtPath }}"
+          if [ -z "$QT_PATH" ]; then
+            echo "qt-setup output is missing, using fallback path"
+            QT_PATH="${{ runner.temp }}/Qt/${{ env.QT_VERSION }}"
+          fi
+          echo "QT_PATH=$QT_PATH" >> $GITHUB_ENV
 
       - name: Install FFTW3
         run: |
