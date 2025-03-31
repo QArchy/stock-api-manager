@@ -3,7 +3,6 @@ name: New app release
 env:
   SOURCE_DIR: ${{ github.workspace }}
   QT_VERSION: 6.8.2
-  QT_PATH: ${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/gcc_64  # Добавлен путь к Qt
   SAM_SOURCE_DIR: ${{ github.workspace }}/src
   SAM_ARTIFACT_WITHOUT_ZIP_ENDING: stockApiManager
   SAM_BUILD_DIR_NAME: buildStockApiManager
@@ -48,6 +47,11 @@ jobs:
           dir: ${{ runner.temp }}
           setup-pyqt: false
           modules: qtwebsockets qtconnectivity
+
+      - name: Set Qt environment variables
+        run: |
+          echo "QT_PATH=${{ steps.qt-setup.outputs.qtPath }}" >> $GITHUB_ENV
+          echo "CMAKE_PREFIX_PATH=${{ steps.qt-setup.outputs.qtPath }}" >> $GITHUB_ENV
 
       - name: Install FFTW3
         run: |
