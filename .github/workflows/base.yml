@@ -28,17 +28,17 @@ jobs:
         run: |
           git fetch --all --tags -f
 
-      - name: Try to cache the Qt-Installation
-        id: cache-qt
-        uses: actions/cache@v4
-        env: 
-          cache-name: cache-qt
-        with:
-          path: ${{ runner.temp }}/Qt
-          key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}
+      #- name: Try to cache the Qt-Installation
+      #  id: cache-qt
+      #  uses: actions/cache@v4
+      #  env: 
+      #    cache-name: cache-qt
+      #  with:
+      #    path: ${{ runner.temp }}/Qt
+      #    key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}
 
-      - if: ${{ steps.cache-qt.outputs.cache-hit != 'true' }}
-        name: Setup Qt
+      #- if: ${{ steps.cache-qt.outputs.cache-hit != 'true' }}
+      - name: Setup Qt
         uses: jurplel/install-qt-action@v4
         with:
           version: ${{ env.QT_VERSION }}
@@ -62,13 +62,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libfftw3-dev
 
-      - name: Zaebal
-        working-directory: ${{ env.QT_PATH }}/gcc_64/lib/cmake/Qt6
-        run: |
-            ls
-
       - name: Configure CMake
-        run: cmake -S . -B ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }} -DQt6_DIR=${{ env.QT_PATH }}/gcc_64/lib/cmake/Qt6 -DCMAKE_PREFIX_PATH=${{ env.QT_PATH }}/gcc_64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        run: cmake -S . -B ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }} \
+          -DQt6_DIR=${{ env.QT_PATH }}/gcc_64/lib/cmake/Qt6 \
+          -DCMAKE_PREFIX_PATH=${{ env.QT_PATH }}/gcc_64 \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
       
       - name: Build
         run: cmake --build ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }} -- -j $(nproc)
