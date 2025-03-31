@@ -37,6 +37,11 @@ jobs:
           path: ${{ runner.temp }}/Qt
           key: ${{ runner.os }}-Qt-${{ env.QT_VERSION }}
 
+      - name: ls temp
+        working-directory: ${{ runner.temp }}/Qt
+        run: |
+          ls
+
       - if: ${{ steps.cache-qt.outputs.cache-hit != 'true' }}
         name: Setup Qt
         uses: jurplel/install-qt-action@v4
@@ -71,7 +76,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.SAM_ARTIFACT_WITHOUT_ZIP_ENDING }}
-          path: ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }}/imports/${{ env.SAM_ARTIFACT_WITHOUT_ZIP_ENDING }}
+          path: ${{ runner.temp }}/${{ env.SAM_BUILD_DIR_NAME }}
 
 
 
