@@ -1,0 +1,13 @@
+1. Processor Architecture   - just use Qt
+2. Operating System         - just use Qt, cmake to generate platform-specific build files.
+3. Build system		    - ninja is prefered (multiplatform build system)
+4. Compiler                 - test on all compilers (GCC (MinGW), Clang, MSVC)
+5. System Libraries         - statically link dependencies where possible
+6. Third-Party Libraries    - choose widely supported libraries, embed code when possible
+
+Testing:
+    Use CI/CD pipelines to test on all target OS/architectures.
+    GitHub Actions, GitLab CI
+Packaging:
+    Distributing platform-specific installers (e.g., .deb, .msi, .dmg).
+    CPack, Inno Setup, or Snap/Flatpak.

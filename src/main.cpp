@@ -54,71 +54,71 @@ int main(int argc, char *argv[]) {
     translation(a);
     Logger::initialize();
 
-    // --- Order Management Setup ---
+    //// --- Order Management Setup ---
 
-    OrderBook* ob = new OrderBook("linear.BTCUSDT", 500);
-    obAnalyzer* oba = new obAnalyzer();
-    QObject::connect(ob, &OrderBook::updated, oba, &obAnalyzer::analyzeOB);
+    //OrderBook* ob = new OrderBook("linear.BTCUSDT", 500);
+    //obAnalyzer* oba = new obAnalyzer();
+    //QObject::connect(ob, &OrderBook::updated, oba, &obAnalyzer::analyzeOB);
 
-    // HTTP Manager Setup
-    HttpParameters httpParams;
-    httpParams.apiKey = ApiSettings::getInstance().getbApi()->keys.apiKeyDemo.toUtf8();
-    httpParams.apiSecret = ApiSettings::getInstance().getbApi()->keys.apiSecretDemo.toUtf8();
-    httpParams.baseUrl = ApiSettings::getInstance().getbApi()->httpParams.demoNetBaseUrl.toUtf8();
-    httpParams.recvWindow = ApiSettings::getInstance().getbApi()->httpParams.recvWindow.toUtf8();
-    HttpManager* httpManager = new HttpManager(httpParams, &a);
+    //// HTTP Manager Setup
+    //HttpParameters httpParams;
+    //httpParams.apiKey = ApiSettings::getInstance().getbApi()->keys.apiKeyDemo.toUtf8();
+    //httpParams.apiSecret = ApiSettings::getInstance().getbApi()->keys.apiSecretDemo.toUtf8();
+    //httpParams.baseUrl = ApiSettings::getInstance().getbApi()->httpParams.demoNetBaseUrl.toUtf8();
+    //httpParams.recvWindow = ApiSettings::getInstance().getbApi()->httpParams.recvWindow.toUtf8();
+    //HttpManager* httpManager = new HttpManager(httpParams, &a);
 
-    // --- Response Handling ---
-    QObject::connect(httpManager, &HttpManager::requestCompleted, [&](const QJsonDocument& response) {
-        QJsonObject obj = response.object();
-        if (obj["retCode"].toInt() == 0) {
-            QJsonObject result = obj["result"].toObject();
-            if (result.contains("orderLinkId")) {
-                //currentOrderLinkId = result["orderLinkId"].toString();
-                qInfo() << "Order placed successfully. ID:" << currentOrderLinkId;
-            }
-        }
-    });
+    //// --- Response Handling ---
+    //QObject::connect(httpManager, &HttpManager::requestCompleted, [&](const QJsonDocument& response) {
+    //    QJsonObject obj = response.object();
+    //    if (obj["retCode"].toInt() == 0) {
+    //        QJsonObject result = obj["result"].toObject();
+    //        if (result.contains("orderLinkId")) {
+    //            //currentOrderLinkId = result["orderLinkId"].toString();
+    //            qInfo() << "Order placed successfully. ID:" << currentOrderLinkId;
+    //        }
+    //    }
+    //});
 
-    // Connect analyzer signals
-    QObject::connect(oba, &obAnalyzer::buySignal, [&](float price, float amount) {
-        qInfo() << "Attempting BUY order at" << price << "Qty:" << amount;
-        placeOrder("Buy", price, amount, httpManager);
-    });
+    //// Connect analyzer signals
+    //QObject::connect(oba, &obAnalyzer::buySignal, [&](float price, float amount) {
+    //    qInfo() << "Attempting BUY order at" << price << "Qty:" << amount;
+    //    placeOrder("Buy", price, amount, httpManager);
+    //});
 
-    QObject::connect(oba, &obAnalyzer::sellSignal, [&](float price, float amount) {
-        qInfo() << "Attempting SELL order at" << price << "Qty:" << amount;
-        placeOrder("Sell", price, amount, httpManager);
-    });
+    //QObject::connect(oba, &obAnalyzer::sellSignal, [&](float price, float amount) {
+    //    qInfo() << "Attempting SELL order at" << price << "Qty:" << amount;
+    //    placeOrder("Sell", price, amount, httpManager);
+    //});
 
-    WebSocketParameters param;
-    param.apiKey = ApiSettings::getInstance().getbApi()->keys.apiKeyDemo.toUtf8();
-    param.apiSecret = ApiSettings::getInstance().getbApi()->keys.apiSecretDemo.toUtf8();
-    param.baseUrl = ApiSettings::getInstance().getbApi()->wsParams.publicUrl.toUtf8();
-    param.isPrivate = false;
+    //WebSocketParameters param;
+    //param.apiKey = ApiSettings::getInstance().getbApi()->keys.apiKeyDemo.toUtf8();
+    //param.apiSecret = ApiSettings::getInstance().getbApi()->keys.apiSecretDemo.toUtf8();
+    //param.baseUrl = ApiSettings::getInstance().getbApi()->wsParams.publicUrl.toUtf8();
+    //param.isPrivate = false;
 
-    WebSocketManager* wsManager = new WebSocketManager(param);
-    wsManager->connectToServer(QJsonDocument(), "linear");
+    //WebSocketManager* wsManager = new WebSocketManager(param);
+    //wsManager->connectToServer(QJsonDocument(), "linear");
 
-    QObject::connect(wsManager, &WebSocketManager::connected, [wsManager]() {
-        qDebug() << "Connected to WebSocket, subscribing to orderbook...";
+    //QObject::connect(wsManager, &WebSocketManager::connected, [wsManager]() {
+    //    qDebug() << "Connected to WebSocket, subscribing to orderbook...";
 
-        QJsonObject subMsg;
-        subMsg["op"] = "subscribe";
-        subMsg["args"] = QJsonArray() << "orderbook.500.BTCUSDT";
+    //    QJsonObject subMsg;
+    //    subMsg["op"] = "subscribe";
+    //    subMsg["args"] = QJsonArray() << "orderbook.500.BTCUSDT";
 
-        if (!wsManager->sendMessage(QJsonDocument(subMsg))) {
-            qCritical() << "Failed to send subscription message";
-        }
-    });
+    //    if (!wsManager->sendMessage(QJsonDocument(subMsg))) {
+    //        qCritical() << "Failed to send subscription message";
+    //    }
+    //});
 
-    QObject::connect(wsManager, &WebSocketManager::messageReceived, ob, &OrderBook::update);
+    //QObject::connect(wsManager, &WebSocketManager::messageReceived, ob, &OrderBook::update);
 
-    QObject::connect(wsManager, &WebSocketManager::errorOccurred, [](const QString& error) {
-        qCritical() << "WebSocket error:" << error;
-    });
+    //QObject::connect(wsManager, &WebSocketManager::errorOccurred, [](const QString& error) {
+    //    qCritical() << "WebSocket error:" << error;
+    //});
 
     MainWindow w;
-    //w.show();
+    w.show();
     return a.exec();
 }
