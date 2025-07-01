@@ -1,0 +1,13 @@
+{
+    "ApiMainnetBaseUrl": "https://api.bybit.com/v5/",
+    "ApiDemoBaseUrl": "https://api-demo.bybit.com/v5/",
+    "RecvWindow": "5000",
+    "ApiKeyDemo": "cXR6lZwBELWqoNA2hG",
+    "ApiSecretDemo": "bYpfCSs9y4Jl7GYpMH6T6gPRxPGnNTDbb4CP",
+    "ApiKeyTestnet": "aCtsnrhuBHn5Nnq2oN",
+    "ApiSecretTestnet": "0tB1fUfZRIFbgqrz2KOhxgrO9vHwrEvOrsCB",
+    "ApiKeyTestnet2": "qm1IHL7N9cBmPtBeyX",
+    "ApiSecretTestnet2": "1WGcp3SN1XZAVLplxmFwrP3SZw2gMU92e5od",
+    "PublicWsUrl": "wss://stream.bybit.com/v5/public/",
+    "PrivateWsUrl": ""
+}
